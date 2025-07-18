@@ -1,4 +1,3 @@
-// Relaciones
 const ramos = {
   "Introducción a la Economía y Estructura Económica Argentina": ["Microeconomía I", "Macroeconomía I", "Matemática para Administradores"],
   "Contabilidad I": ["Interpretación de los Estados Contables"],
@@ -20,24 +19,18 @@ const ramos = {
   "Finanzas de Empresas": ["Finanzas avanzadas en Entidades Públicas y Privadas"]
 };
 
-// Todos los ramos
 const todos = Array.from(new Set(Object.keys(ramos).concat(...Object.values(ramos))));
 
-// Estado inicial
 const estado = {};
 const bloqueado = {};
 todos.forEach(r => estado[r] = false);
 todos.forEach(r => bloqueado[r] = false);
 
-// Marcar como bloqueados los que dependen de otros
 Object.entries(ramos).forEach(([padre, hijos]) => {
   hijos.forEach(hijo => bloqueado[hijo] = true);
 });
-
-// Los iniciales no deberían estar bloqueados
 Object.keys(ramos).forEach(r => bloqueado[r] = false);
 
-// Render
 const contenedor = document.getElementById("malla");
 todos.forEach(r => {
   const btn = document.createElement("div");
@@ -55,7 +48,6 @@ function aprobar(nombre, elemento) {
 
   if (ramos[nombre]) {
     ramos[nombre].forEach(hijo => {
-      // Revisar si TODOS sus padres están aprobados
       const padres = Object.entries(ramos).filter(([p, hijos]) => hijos.includes(hijo)).map(([p]) => p);
       const todosPadresAprobados = padres.every(p => estado[p]);
       if (todosPadresAprobados) {
